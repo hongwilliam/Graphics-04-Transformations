@@ -58,18 +58,20 @@ void parse_file ( char * filename,
   clear_screen(s);
 
   color c;
-  c.red = 250;
-  c.green = 128;
-  c.blue = 114;
+  c.red = 255;
+  c.green = 105;
+  c.blue = 180;
 
   if (strcmp(filename, "stdin") == 0 )
     f = stdin;
   else
     f = fopen(filename, "r");
 
+  struct matrix *transform_matrix = new_matrix(4, 4);
+
   while (fgets(line, 255, f) != NULL ) {
-    struct matrix *transform_matrix = new_matrix(4, 4);
-    line[strlen(line)-1]='\0';
+    if (line[strlen(line)-1]=='\n') {
+      line[strlen(line)-1]='\0'; }
     printf(":%s:\n",line);
 
     if (strcmp(line, "line") == 0){
