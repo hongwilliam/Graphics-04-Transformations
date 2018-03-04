@@ -74,7 +74,14 @@ void parse_file ( char * filename,
 
     if (strcmp(line, "line") == 0){
       fgets(line, 255, f);
-      double x0, y0, z0, x1, y1, z1;
+      double x0 = 0;
+      double y0 = 0;
+      double z0 = 0;
+      double x1 = 0;
+      double y1 = 0;
+      double z1 = 0;
+      if (line[strlen(line)-1]=='\n'){
+        line[strlen(line)-1]='\0'; }
       sscanf(line, "%lf %lf %lf %lf %lf %lf", &x0, &y0, &z0, &x1, &y1, &z1);
       add_edge(edges, x0, y0, z0, x1, y1, z1); }
 
@@ -83,47 +90,59 @@ void parse_file ( char * filename,
 
     else if (strcmp(line, "scale") == 0){
       fgets(line, 255, f);
-      double x, y, z;
+      if (line[strlen(line)-1]=='\n'){
+        line[strlen(line)-1]='\0'; }
+      double x = 0;
+      double y = 0;
+      double z = 0;
       sscanf(line, "%lf %lf %lf", &x, &y, &z);
       transform_matrix = make_scale(x, y, z);
-      matrix_mult(transform_matrix, transform); }
+      matrix_mult(transform_matrix, transform);
+      free_matrix(transform_matrix); }
 
     else if (strcmp(line, "move") == 0){
       fgets(line, 255, f);
-      double x, y, z;
+      if (line[strlen(line)-1]=='\n'){
+        line[strlen(line)-1]='\0'; }
+      double x = 0;
+      double y = 0;
+      double z = 0;
       sscanf(line, "%lf %lf %lf", &x, &y, &z);
       transform_matrix = make_translate(x, y, z);
-      matrix_mult(transform_matrix, transform); }
+      matrix_mult(transform_matrix, transform);
+      free_matrix(transform_matrix); }
 
     else if (strcmp(line, "rotate") == 0){
       fgets(line, 255, f);
+      if (line[strlen(line)-1]=='\n'){
+        line[strlen(line)-1]='\0'; }
       double theta = 0;
-      char axis;
-      sscanf(line, "%c %lf", &axis, &theta);
-      switch(axis){
-        case 'x':
-          transform_matrix = make_rotX(theta);
-          break;
-        case 'y':
-          transform_matrix = make_rotY(theta);
-          break;
-        case 'z':
-          transform_matrix = make_rotZ(theta);
-          break; }
-        matrix_mult(transform_matrix, transform); }
+      char axis[2];
+      sscanf(line, "%s %lf", axis, &theta);
+      if (axis[0] == 'x') {
+	       transform_matrix = make_rotX(theta); }
+      else if (axis[0] == 'y') {
+	       transform_matrix = make_rotY(theta); }
+      else if (axis[0] == 'z') {
+	       transform_matrix =make_rotZ(theta); }
+      matrix_mult(transform_matrix, transform);
+      free_matrix(transform_matrix); }
 
       else if (strcmp(line, "apply") == 0){
         matrix_mult(transform, edges); }
 
       else if (strcmp(line, "display") == 0){
+        clear_screen(s);
         draw_lines(edges, s, c);
-        display(s);
-        clear_screen(s); }
+        display(s); }
 
       else if (strcmp(line, "save") == 0){
-        char file;
-        sscanf(line, "%c", &file);
-        save_extension(s, &file); }
+        fgets(line, 255, f);
+        if (line[strlen(line)-1]=='\n'){
+          line[strlen(line)-1]='\0'; }
+        clear_screen(s);
+        draw_lines(edges, s, c);
+        save_extension(s, line); }
 
   }
 }

@@ -21,6 +21,22 @@ struct matrix * make_translate(double x, double y, double z) {
   return T;
 }
 
+/*======== struct matrix * make_scale() ==========
+Inputs:  int x
+         int y
+         int z
+Returns: The translation matrix creates using x, y and z
+as the scale factors
+====================*/
+struct matrix * make_scale(double x, double y, double z) {
+  struct matrix *S = new_matrix(4, 4);
+  ident(S);
+  S->m[0][0] = x;
+  S->m[1][1] = y;
+  S->m[2][2] = z;
+  return S;
+}
+
 
 /*======== struct matrix * make_rotX() ==========
 Inputs:  double theta
