@@ -10,7 +10,6 @@ struct matrix {
 
 //transformation routines
 struct matrix * make_translate(double x, double y, double z);
-struct matrix * make_scale(double x, double y, double z);
 struct matrix * make_rotX(double theta);
 struct matrix * make_rotY(double theta);
 struct matrix * make_rotZ(double theta);
