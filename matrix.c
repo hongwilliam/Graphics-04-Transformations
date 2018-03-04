@@ -44,11 +44,11 @@ Returns: The rotation matrix created using theta as the
 angle of rotation and X as the axis of rotation.
 ====================*/
 struct matrix * make_rotX(double theta) {
-  double radians = (M_PI * theta) / (180.0); //convert degrees to radians
+  double radians = (M_PI * theta) / (180); //convert degrees to radians
   struct matrix *Rox = new_matrix(4, 4);
   ident(Rox);
   Rox->m[1][1] = cos(radians);
-  Rox->m[1][2] = sin(radians) * -1.0;
+  Rox->m[1][2] = -sin(radians);
   Rox->m[2][1] = sin(radians);
   Rox->m[2][2] = cos(radians);
   return Rox;
@@ -61,12 +61,12 @@ Returns: The rotation matrix created using theta as the
 angle of rotation and Y as the axis of rotation.
 ====================*/
 struct matrix * make_rotY(double theta) {
-  double radians = (M_PI * theta) / (180.0); //convert degrees to radians
+  double radians = (M_PI * theta) / (180); //convert degrees to radians
   struct matrix *Roy = new_matrix(4, 4);
   ident(Roy);
-  Roy->m[0][1] = cos(radians);
+  Roy->m[0][0] = cos(radians);
   Roy->m[0][2] = sin(radians);
-  Roy->m[2][0] = sin(radians) * -1.0;
+  Roy->m[2][0] = -sin(radians);
   Roy->m[2][2] = cos(radians);
   return Roy;
 }
@@ -78,11 +78,11 @@ Returns: The rotation matrix created using theta as the
 angle of rotation and Z as the axis of rotation.
 ====================*/
 struct matrix * make_rotZ(double theta) {
-  double radians = (M_PI * theta) / 180.0;
+  double radians = (M_PI * theta) / (180); //convert degrees to radians
   struct matrix *Roz = new_matrix(4, 4);
   ident(Roz);
   Roz->m[0][0] = cos(radians);
-  Roz->m[0][1] = sin(radians) * -1.0;
+  Roz->m[0][1] = -sin(radians);
   Roz->m[1][0] = sin(radians);
   Roz->m[1][1] = cos(radians);
   return Roz;
